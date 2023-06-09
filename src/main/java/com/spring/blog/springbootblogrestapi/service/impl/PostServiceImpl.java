@@ -4,11 +4,10 @@ import com.spring.blog.springbootblogrestapi.entity.Post;
 import com.spring.blog.springbootblogrestapi.exception.ResourceNotFoundException;
 import com.spring.blog.springbootblogrestapi.payload.PostDto;
 import com.spring.blog.springbootblogrestapi.payload.PostResponse;
-import com.spring.blog.springbootblogrestapi.repository.CommentRepository;
 import com.spring.blog.springbootblogrestapi.repository.PostRepository;
 import com.spring.blog.springbootblogrestapi.service.PostService;
-import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PostServiceImpl implements PostService {
     private PostRepository postRepository;
-    private CommentRepository commentRepository;
-
+    private ModelMapper modelMapper;
     @Override
     public PostDto createPost(PostDto postDto) {
         // convert DTO to entity
@@ -71,25 +69,14 @@ public class PostServiceImpl implements PostService {
 //    @Transactional
     public void deletePostById(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(() -> new ResourceNotFoundException("Post", "id", postId.toString()));
-//        commentRepository.deleteAllByPost(post);
         postRepository.delete(post);
     }
 
     private PostDto mapToDTO(Post post) {
-        return PostDto.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .description(post.getDescription())
-                .content(post.getContent())
-                .comments(post.getComments())
-                .build();
+        return modelMapper.map(post, PostDto.class);
     }
 
     private Post mapToEntity(PostDto postDto) {
-        return Post.builder()
-                .title(postDto.getTitle())
-                .description(postDto.getDescription())
-                .content(postDto.getContent())
-                .build();
+        return modelMapper.map(postDto, Post.class);
     }
 }

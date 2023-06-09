@@ -9,7 +9,6 @@ import lombok.Data;
 import java.util.Set;
 
 @Data
-@Builder
 public class PostDto {
     private Long id;
     @NotEmpty
@@ -20,5 +19,5 @@ public class PostDto {
     private String description;
     @NotEmpty
     private String content;
-    private Set<Comment> comments;
+    private Set<CommentDto> comments;
 }

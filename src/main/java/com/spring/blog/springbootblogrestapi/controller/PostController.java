@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class PostController {
     private PostService postService;
+    @PreAuthorize("hasAnyRole('ROLE_USER'.'ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
@@ -33,10 +35,12 @@ public class PostController {
     public ResponseEntity<PostDto> getPostById(@PathVariable Long postId){
         return ResponseEntity.ok(postService.getPostById(postId));
     }
+    @PreAuthorize("hasAnyRole('ROLE_USER'.'ROLE_ADMIN')")
     @PutMapping("/{postId}")
     public ResponseEntity<PostDto> updatePostById(@PathVariable Long postId,@Valid @RequestBody PostDto postDto){
         return ResponseEntity.ok(postService.updatePostById(postId, postDto));
     }
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @DeleteMapping("/{postId}")
     public ResponseEntity<String> deletePostById(@PathVariable Long postId){
         postService.deletePostById(postId);

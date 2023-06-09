@@ -9,6 +9,7 @@ import com.spring.blog.springbootblogrestapi.repository.CommentRepository;
 import com.spring.blog.springbootblogrestapi.repository.PostRepository;
 import com.spring.blog.springbootblogrestapi.service.CommentService;
 import lombok.AllArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
     private CommentRepository commentRepository;
     private PostRepository postRepository;
+    private ModelMapper modelMapper;
 
     @Override
     public CommentDto createComment(Long postId, CommentDto commentDto) {
@@ -77,19 +79,10 @@ public class CommentServiceImpl implements CommentService {
     }
 
     private CommentDto mapToDto(Comment comment) {
-        return CommentDto.builder()
-                .id(comment.getId())
-                .name(comment.getName())
-                .email(comment.getEmail())
-                .body(comment.getBody())
-                .build();
+        return modelMapper.map(comment, CommentDto.class);
     }
 
     private Comment mapToEntity(CommentDto commentDto) {
-        return Comment.builder()
-                .name(commentDto.getName())
-                .email(commentDto.getEmail())
-                .body(commentDto.getBody())
-                .build();
+        return modelMapper.map(commentDto, Comment.class);
     }
 }
