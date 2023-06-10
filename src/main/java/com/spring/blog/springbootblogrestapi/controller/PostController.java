@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class PostController {
     private PostService postService;
-    @PreAuthorize("hasAnyRole('ROLE_USER'.'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<PostDto> createPost(@Valid @RequestBody PostDto postDto){
         return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
@@ -35,7 +35,7 @@ public class PostController {
     public ResponseEntity<PostDto> getPostById(@PathVariable Long postId){
         return ResponseEntity.ok(postService.getPostById(postId));
     }
-    @PreAuthorize("hasAnyRole('ROLE_USER'.'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_USER','ROLE_ADMIN')")
     @PutMapping("/{postId}")
     public ResponseEntity<PostDto> updatePostById(@PathVariable Long postId,@Valid @RequestBody PostDto postDto){
         return ResponseEntity.ok(postService.updatePostById(postId, postDto));

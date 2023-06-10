@@ -7,7 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    void deleteAllByPost(Post post);
-
     List<Comment> findAllByPost(Post post);
 }

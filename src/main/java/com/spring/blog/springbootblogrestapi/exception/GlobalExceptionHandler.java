@@ -49,25 +49,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetail, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorDetail> handleGlobalException(Exception exception, WebRequest webRequest) {
-        ErrorDetail errorDetail = ErrorDetail.builder()
-                .date(new Date())
-                .message(exception.getMessage())
-                .detail(webRequest.getDescription(false))
-                .build();
-        return new ResponseEntity<>(errorDetail, HttpStatus.INTERNAL_SERVER_ERROR);
-    }
+//    @ExceptionHandler(Exception.class)
+//    public ResponseEntity<ErrorDetail> handleGlobalException(Exception exception, WebRequest webRequest) {
+//        ErrorDetail errorDetail = ErrorDetail.builder()
+//                .date(new Date())
+//                .message(exception.getMessage())
+//                .detail(webRequest.getDescription(false))
+//                .build();
+//        return new ResponseEntity<>(errorDetail, HttpStatus.INTERNAL_SERVER_ERROR);
+//    }
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String message = error.getDefaultMessage();
-            errors.put(fieldName, message);
-        });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
-    }
+//    @Override
+//    protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+//        Map<String, String> errors = new HashMap<>();
+//        ex.getBindingResult().getAllErrors().forEach((error) -> {
+//            String fieldName = ((FieldError) error).getField();
+//            String message = error.getDefaultMessage();
+//            errors.put(fieldName, message);
+//        });
+//        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+//    }
 
 }
